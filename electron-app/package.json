@@ -15,7 +15,7 @@
     "@theia/process": "latest",
     "@theia/terminal": "latest",
     "@theia/workspace": "latest",
-    "typefox-test": "0.0.0"
+    "typefox-test": "0.1.0"
   },
   "devDependencies": {
     "@theia/cli": "latest",

@@ -3,13 +3,16 @@
   "keywords": [
     "theia-extension"
   ],
-  "version": "0.0.0",
+  "version": "0.1.0",
   "files": [
     "lib",
     "src"
   ],
   "dependencies": {
-    "@theia/core": "latest"
+    "@theia/core": "latest",
+    "@theia/filesystem": "latest",
+    "@theia/file-search": "latest",
+    "toml": "3.0.0"
   },
   "devDependencies": {
     "rimraf": "latest",
@@ -23,7 +26,8 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/typefox-test-frontend-module"
+      "frontend": "lib/browser/typefox-test-frontend-module",
+      "backend": "lib/node/rust-dep-checker-backend-module"
     }
   ]
 }

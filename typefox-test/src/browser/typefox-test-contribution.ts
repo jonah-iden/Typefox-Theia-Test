@@ -1,22 +1,26 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
-import { Command, CommandContribution, CommandRegistry, MenuContribution, MenuModelRegistry, MessageService } from '@theia/core/lib/common';
+import { Command, CommandContribution, CommandRegistry, MenuContribution, MenuModelRegistry} from '@theia/core/lib/common';
 import { CommonMenus } from '@theia/core/lib/browser';
+import { IDependencyVersionCheckServer } from "../common/dependency-version-checker-protocoll";
 
-export const TypefoxTestCommand: Command = {
-    id: 'TypefoxTest.command',
-    label: 'Say Hello'
+
+export const dependencyVersionCheckCommand: Command = {
+    id: 'dependencyVersionCheck.command',
+    label: "check dependency versions"
 };
 
 @injectable()
 export class TypefoxTestCommandContribution implements CommandContribution {
 
-    constructor(
-        @inject(MessageService) private readonly messageService: MessageService,
-    ) { }
+    constructor(@inject(IDependencyVersionCheckServer) private depCheckServer: IDependencyVersionCheckServer) { }
 
     registerCommands(registry: CommandRegistry): void {
-        registry.registerCommand(TypefoxTestCommand, {
-            execute: () => this.messageService.info('Hello World!')
+        registry.registerCommand(dependencyVersionCheckCommand, {
+            execute: async () => {
+                const mismatches = await this.depCheckServer.analyzeDependencies();
+                console.log("mismatches recieved");
+                console.log(mismatches);
+            }
         });
     }
 }
@@ -26,8 +30,8 @@ export class TypefoxTestMenuContribution implements MenuContribution {
 
     registerMenus(menus: MenuModelRegistry): void {
         menus.registerMenuAction(CommonMenus.EDIT_FIND, {
-            commandId: TypefoxTestCommand.id,
-            label: TypefoxTestCommand.label
+            commandId: dependencyVersionCheckCommand.id,
+            label: dependencyVersionCheckCommand.label
         });
     }
 }
