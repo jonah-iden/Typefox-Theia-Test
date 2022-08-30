@@ -1,6 +1,6 @@
 import { injectable, inject } from '@theia/core/shared/inversify';
 import { Command, CommandContribution, CommandRegistry, MenuContribution, MenuModelRegistry} from '@theia/core/lib/common';
-import { CommonMenus } from '@theia/core/lib/browser';
+import { CommonMenus, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { IDependencyVersionCheckServer } from "../common/dependency-version-checker-protocoll";
 
 
@@ -12,7 +12,7 @@ export const dependencyVersionCheckCommand: Command = {
 @injectable()
 export class TypefoxTestCommandContribution implements CommandContribution {
 
-    constructor(@inject(IDependencyVersionCheckServer) private depCheckServer: IDependencyVersionCheckServer) { }
+    @inject(IDependencyVersionCheckServer) depCheckServer: IDependencyVersionCheckServer;
 
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(dependencyVersionCheckCommand, {

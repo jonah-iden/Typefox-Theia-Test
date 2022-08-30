@@ -1,11 +1,8 @@
 import { JsonRpcServer } from "@theia/core"
 
-export const IDependencyVersionCheckServer = Symbol.for("DependencyVersionCheckerServer")
-export interface IDependencyVersionCheckServer extends JsonRpcServer<IDependencyVersionCheckerClient> {
-    analyzeDependencies(): Promise<string[]>;
-}
+export const servicePath = "/services/dependencyVersionChecker";
 
-export const IDependencyVersionCheckerClient = Symbol.for("DependencyVersionCheckerClient")
-export interface IDependencyVersionCheckerClient {
-    showDependencyMismatches(mismatches: string[]): Promise<void>;
+export const IDependencyVersionCheckServer = Symbol.for("DependencyVersionCheckerServer")
+export interface IDependencyVersionCheckServer {
+    analyzeDependencies(): Promise<string[]>;
 }

@@ -9,9 +9,9 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "latest",
-    "@theia/filesystem": "latest",
-    "@theia/file-search": "latest",
+    "@theia/core": "1.25.0",
+    "@theia/filesystem": "1.25.0",
+    "@theia/file-search": "1.25.0",
     "toml": "3.0.0"
   },
   "devDependencies": {
