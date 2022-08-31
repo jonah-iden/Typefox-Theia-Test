@@ -15,9 +15,9 @@ export class DependencyVersionCheckerServer implements IDependencyVersionCheckSe
     /**
      * analyzes the dependencies from the cargo.toml and returns a list of mismatches
      */
-    async analyzeDependencies(): Promise<string[]> {
+    async analyzeDependencies(rootPaths: string[]): Promise<string[]> {
         // this path is hardcoded right now for my local test workspace because i couldn't figure out where to get the acutal path from
-        const cargoTomlFiles: string[] = await this.fileSearchService.find("cargo.toml", {rootUris: ["d:/Projekte/Kleinere_Projekte/Rust"]});
+        const cargoTomlFiles: string[] = await this.fileSearchService.find("cargo.toml", {rootUris: rootPaths});
         const allDependencies: Dependency[] = []
         for(let path of cargoTomlFiles) {
             const tomlData = toml.parse(await this.getFileContent(path));

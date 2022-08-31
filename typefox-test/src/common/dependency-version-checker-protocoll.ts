@@ -4,5 +4,5 @@ export const servicePath = "/services/dependencyVersionChecker";
 
 export const IDependencyVersionCheckServer = Symbol.for("DependencyVersionCheckerServer")
 export interface IDependencyVersionCheckServer {
-    analyzeDependencies(): Promise<string[]>;
+    analyzeDependencies(rootPath: string[]): Promise<string[]>;
 }
