@@ -3,6 +3,7 @@ import { Command, CommandContribution, CommandRegistry, MenuContribution, MenuMo
 import { WorkspaceService } from '@theia/workspace/lib/browser'
 import { CommonMenus, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { IDependencyVersionCheckServer } from "../common/dependency-version-checker-protocoll";
+import URI from '@theia/core/lib/common/uri';
 
 
 export const dependencyVersionCheckCommand: Command = {
@@ -19,7 +20,9 @@ export class TypefoxTestCommandContribution implements CommandContribution {
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(dependencyVersionCheckCommand, {
             execute: async () => {
-                const mismatches = await this.depCheckServer.analyzeDependencies(await this.workspaceService.tryGetRoots().map(r => r.resource.toString()));
+                const rootPaths = await this.workspaceService.tryGetRoots().map(r => decodeURIComponent(r.resource.toString()));
+                console.log(rootPaths)
+                const mismatches = await this.depCheckServer.analyzeDependencies(rootPaths);
                 console.log("mismatches recieved");
                 console.log(mismatches);
             }

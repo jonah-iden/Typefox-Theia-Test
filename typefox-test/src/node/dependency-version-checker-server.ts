@@ -5,6 +5,7 @@ import { IDependencyVersionCheckServer } from "../common/dependency-version-chec
 import * as fs from 'fs';
 import * as toml from 'toml'
 import { FileUri } from '@theia/core/lib/node/file-uri';
+import URI from "@theia/core/lib/common/uri";
 
 
 @injectable()
@@ -16,8 +17,7 @@ export class DependencyVersionCheckerServer implements IDependencyVersionCheckSe
      * analyzes the dependencies from the cargo.toml and returns a list of mismatches
      */
     async analyzeDependencies(rootPaths: string[]): Promise<string[]> {
-        // this path is hardcoded right now for my local test workspace because i couldn't figure out where to get the acutal path from
-        const cargoTomlFiles: string[] = await this.fileSearchService.find("cargo.toml", {rootUris: rootPaths});
+        const cargoTomlFiles: string[] = await this.fileSearchService.find("cargo.toml", {rootUris: rootPaths.map(r => this.uriToStringPath(r))});
         const allDependencies: Dependency[] = []
         for(let path of cargoTomlFiles) {
             const tomlData = toml.parse(await this.getFileContent(path));
@@ -62,6 +62,14 @@ export class DependencyVersionCheckerServer implements IDependencyVersionCheckSe
             }
         }
         return mismatches;
+    }
+
+    private uriToStringPath(uri: string): string {
+        let uriPath = new URI(uri).path.toString();
+        if(uriPath.startsWith("/")) {
+            uriPath = uriPath.substring(1);
+        }
+        return uriPath;
     }
 
 
